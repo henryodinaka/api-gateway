@@ -16,6 +16,11 @@ spring:
         - name: GatewayGlobalFilter
       routes:
 
+        - id: swagger
+          uri: http://wallet-svc:9090/
+          predicates:
+            - Path=/**
+
         - id: token
           uri: http://wallet-svc:9090/
           predicates:

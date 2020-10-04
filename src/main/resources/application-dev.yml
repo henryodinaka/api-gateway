@@ -15,13 +15,18 @@ spring:
         - name: GatewayGlobalFilter
       routes:
 
+        - id: swagger
+          uri: http://localhost:60098/
+          predicates:
+            - Path=/**
+            #            - name: TokenPostFilter
+
         - id: token
-#          uri: http://localhost:60098/
+          #          uri: http://localhost:60098/
           uri: http://35.194.18.85:9090/
           predicates:
             - Path=/api/v1/token/**
           filters:
-#            - name: TokenPostFilter
             - name: EncryptDecryptFilter
 
 
