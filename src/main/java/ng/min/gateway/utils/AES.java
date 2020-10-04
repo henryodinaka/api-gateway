@@ -106,10 +106,10 @@ public class AES {
 
 
 
-            log.info("String to be encrypted "+strToEncrypt);
+//            log.info("String to be encrypted "+strToEncrypt);
 
             Response response = JsonConverter.getElement(strToEncrypt,Response.class);
-            log.info("Response Object "+response);
+//            log.info("Response Object "+response);
             var data = response.getData();
             if (data == null)
                 return JsonConverter.getJson(response);
@@ -119,14 +119,14 @@ public class AES {
                 return JsonConverter.getJson(response);
             // Decrypt backend token with backend key
             var jwtTokenExtractedWithBackendKey = decrypt(tokenEncryptedWithBackendKey,false);
-            log.info("JWT Token decrypted with backend key  "+jwtTokenExtractedWithBackendKey);
+//            log.info("JWT Token decrypted with backend key  "+jwtTokenExtractedWithBackendKey);
             //Encrypt the JWT token with frontend key
             var tokenEncryptedWithFrontEndKey = encrypt(jwtTokenExtractedWithBackendKey, true);
             //set the token in the response
-            log.info("Token encrypted with frontend "+tokenEncryptedWithFrontEndKey);
+//            log.info("Token encrypted with frontend "+tokenEncryptedWithFrontEndKey);
 
             response.setData(data.setToken(tokenEncryptedWithFrontEndKey));
-            log.info("Response Object Modified "+response);
+//            log.info("Response Object Modified "+response);
 
             return JsonConverter.getJson(response);
 

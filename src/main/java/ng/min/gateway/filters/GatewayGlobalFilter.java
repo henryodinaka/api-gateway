@@ -22,7 +22,6 @@ public class GatewayGlobalFilter extends AbstractGatewayFilterFactory<GatewayGlo
 
 	@Override
 	public GatewayFilter apply(Config config) {
-		System.out.println("this is the global filter");
 		
 		return (exchange, chain) -> {
 			ServerHttpRequest request = exchange.getRequest().mutate()

@@ -61,7 +61,7 @@ public class EncryptDecryptFilter extends AbstractGatewayFilterFactory<EncryptDe
     @Override
     public GatewayFilter apply(Config config) {
 
-        System.out.println("Applying encrypt-decrypt filter");
+//        System.out.println("Applying encrypt-decrypt filter");
         return new OrderedGatewayFilter((exchange, chain) -> {
 
             System.out.println("Applying encrypt-decrypt filter");
@@ -136,7 +136,6 @@ public class EncryptDecryptFilter extends AbstractGatewayFilterFactory<EncryptDe
                 Mono<String> modifiedBody = extractBody(exchange, clientResponse)
                         .flatMap(originalBody -> Mono.just(Objects.requireNonNull(AES.encryptBody(originalBody))))
                         .switchIfEmpty(Mono.empty());
-				System.out.println("Modified body "+modifiedBody);
                 BodyInserter<Mono<String>, ReactiveHttpOutputMessage> bodyInserter = BodyInserters.fromPublisher(modifiedBody, String.class);
 
                 CachedBodyOutputMessage outputMessage = new CachedBodyOutputMessage(exchange, exchange.getResponse().getHeaders());
@@ -144,7 +143,6 @@ public class EncryptDecryptFilter extends AbstractGatewayFilterFactory<EncryptDe
                 return bodyInserter.insert(outputMessage, new BodyInserterContext())
                         .then(Mono.defer(() -> {
                             Mono<DataBuffer> messageBody = updateBody(getDelegate(), outputMessage);
-							System.out.println("Message body "+messageBody);
                             HttpHeaders headers = getDelegate().getHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
                             if (headers.containsKey(HttpHeaders.CONTENT_LENGTH)) {
@@ -181,14 +179,12 @@ public class EncryptDecryptFilter extends AbstractGatewayFilterFactory<EncryptDe
             }
 
             private Mono<DataBuffer> updateBody(ServerHttpResponse httpResponse, CachedBodyOutputMessage message) {
-				System.out.println("the body "+message.getBody());
                 Mono<DataBuffer> response = DataBufferUtils.join(message.getBody());
 
                 List<String> encodingHeaders = httpResponse.getHeaders()
                         .getOrEmpty(HttpHeaders.CONTENT_ENCODING);
                 for (String encoding : encodingHeaders) {
                     MessageBodyEncoder encoder = messageBodyEncoders.get(encoding);
-					System.out.println("Message encoder "+encoder);
                     if (encoder != null) {
                         DataBufferFactory dataBufferFactory = httpResponse.bufferFactory();
                         response = response.publishOn(Schedulers.parallel())
