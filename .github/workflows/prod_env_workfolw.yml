@@ -1,0 +1,20 @@
+name: Deploy to Production on GKE cluster.
+on:
+  release:
+    types: [created]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Pull manifest file from config repo
+        run: curl -o wallet-system.yml https://1fd8c0ce5eaea18fac2f3551890548070f061bf3@raw.githubusercontent.com/henryodinakamin/ConfigStore/master/k8s-manifests/deployments/wallet-system.yml
+      - name: kubectl - Google Cloud GKE cluster.
+        uses: ameydev/gke-kubectl-action@master
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GKE_KEY }}
+          CLUSTER_NAME: min-ng
+          ZONE_NAME: us-central1-a
+        with:
+          args: apply -f wallet-system.yml
