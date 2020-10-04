@@ -1,0 +1,60 @@
+server:
+  port: 80
+
+app:
+  key:
+    encryption:
+      backend: ${KEY_BACK}
+      frontend: ${KEY_FRONT}
+
+---
+spring:
+  cloud:
+    gateway:
+      default-filters:
+#        - RemoveRequestHeader=ClientId
+        - name: GatewayGlobalFilter
+      routes:
+
+        - id: token
+          uri: http://wallet-svc:9090/
+          predicates:
+            - Path=/api/v1/token/**
+          filters:
+            - name: TokenPreFilter
+            - name: TokenPostFilter
+        - id: wallet
+          uri: http://wallet-svc:9090/
+          predicates:
+            - Path=/api/v1/wallet/**
+        - id: account
+          uri: http://wallet-svc:9090/
+          predicates:
+            - Path=/api/v1/account/**
+        - id: bank
+          uri: http://wallet-svc:9090/
+          predicates:
+            - Path=/api/v1/bank/**
+        - id: client
+          uri: http://wallet-svc:9090/
+          predicates:
+            - Path=/api/v1/client/**
+        - id: transactions
+          uri: http://wallet-svc:9090/
+          predicates:
+            - Path=/api/v1/transactions/**
+        - id: payment
+          uri: http://wallet-svc:9090/
+          predicates:
+            - Path=/api/v1/payment/**
+        - id: role
+          uri: http://wallet-svc:9090/
+          predicates:
+            - Path=/api/v1/role/**
+#server:
+#  ssl:
+#    enabled: true
+#    key-alias: wallet
+#    key-store-password: leoHenry1
+#    key-store: src/main/resources/ebininfosoft-ssl-key.p12
+#    key-store-type: PKCS12

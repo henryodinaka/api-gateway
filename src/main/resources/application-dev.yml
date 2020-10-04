@@ -1,0 +1,82 @@
+server:
+  port: 9090
+
+app:
+  key:
+    encryption:
+      backend: stillkeepitsimpleAtTheBackEnd
+      frontend: justkeepitsimpleAlsoAtTheFrontEnd
+---
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        #        - RemoveRequestHeader=ClientId
+        - name: GatewayGlobalFilter
+      routes:
+
+        - id: token
+#          uri: http://localhost:60098/
+          uri: http://35.194.18.85:9090/
+          predicates:
+            - Path=/api/v1/token/**
+          filters:
+#            - name: TokenPostFilter
+            - name: EncryptDecryptFilter
+
+
+        - id: wallet
+          uri: http://localhost:60098/
+          predicates:
+            - Path=/api/v1/wallet/**
+          filters:
+            - name: TokenPreFilter
+
+        - id: account
+          uri: http://localhost:60098/
+          predicates:
+            - Path=/api/v1/account/**
+          filters:
+            - name: TokenPreFilter
+
+        - id: bank
+          uri: http://localhost:60098/
+          predicates:
+            - Path=/api/v1/bank/**
+          filters:
+            - name: TokenPreFilter
+
+        - id: client
+          uri: http://localhost:60098/
+          predicates:
+            - Path=/api/v1/client/**
+          filters:
+            - name: TokenPreFilter
+
+        - id: transactions
+          uri: http://localhost:60098/
+          predicates:
+            - Path=/api/v1/transactions/**
+          filters:
+            - name: TokenPreFilter
+
+        - id: payment
+          uri: http://localhost:60098/
+          predicates:
+            - Path=/api/v1/payment/**
+          filters:
+            - name: TokenPreFilter
+
+        - id: role
+          uri: http://localhost:60098/
+          predicates:
+            - Path=/api/v1/role/**
+          filters:
+            - name: TokenPreFilter
+#server:
+#  ssl:
+#    enabled: true
+#    key-alias: wallet
+#    key-store-password: leoHenry1
+#    key-store: src/main/resources/ebininfosoft-ssl-key.p12
+#    key-store-type: PKCS12

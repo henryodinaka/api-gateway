@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "app.key.encryption.backend",
+      "type": "java.lang.String",
+      "description": "Description for app.key.encryption.backend."
+    },
+    {
+      "name": "app.key.encryption.frontend",
+      "type": "java.lang.String",
+      "description": "Description for app.key.encryption.frontend."
+    }
+  ] }
+
