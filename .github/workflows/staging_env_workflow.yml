@@ -1,8 +1,8 @@
 name: Build And Deploy to Staging on GKE cluster
 
 on:
-  push:
-    branches: [ master ]
+#  push:
+#    branches: [ master ]
   pull_request:
     branches: [ master ]
 
