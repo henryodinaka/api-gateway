@@ -1,5 +1,11 @@
 server:
   port: 9090
+  ssl:
+    enabled: true
+    key-alias: gateway-keystore
+    key-store-password: leoHenry
+    key-store: src/main/resources/certs/gateway-keystore.p12
+    key-store-type: PKCS12
 
 app:
   key:
@@ -22,8 +28,8 @@ spring:
             #            - name: TokenPostFilter
 
         - id: token
-          #          uri: http://localhost:60098/
-          uri: http://35.194.18.85:9090/
+          uri: http://localhost:60098/
+#          uri: http://35.194.18.85:9090/
           predicates:
             - Path=/api/v1/token/**
           filters:
@@ -78,10 +84,6 @@ spring:
             - Path=/api/v1/role/**
           filters:
             - name: TokenPreFilter
-#server:
-#  ssl:
-#    enabled: true
-#    key-alias: wallet
-#    key-store-password: leoHenry1
-#    key-store: src/main/resources/ebininfosoft-ssl-key.p12
-#    key-store-type: PKCS12
+#    httpclient:
+#      ssl:
+#        useInsecureTrustManager: true
