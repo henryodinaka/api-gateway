@@ -17,7 +17,6 @@ spring:
   cloud:
     gateway:
       default-filters:
-        #        - RemoveRequestHeader=ClientId
         - name: GatewayGlobalFilter
       routes:
 

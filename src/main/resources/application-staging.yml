@@ -13,7 +13,8 @@ spring:
     gateway:
       default-filters:
 #        - RemoveRequestHeader=ClientId
-        - name: GatewayGlobalFilter
+#        - name: GatewayGlobalFilter
+        - name: HttpsToHttpFilter
       routes:
 
         - id: swagger
