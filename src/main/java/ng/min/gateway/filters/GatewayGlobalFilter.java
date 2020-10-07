@@ -24,11 +24,26 @@ public class GatewayGlobalFilter extends AbstractGatewayFilterFactory<GatewayGlo
 	public GatewayFilter apply(Config config) {
 		
 		return (exchange, chain) -> {
-			ServerHttpRequest request = exchange.getRequest().mutate()
-					.header("scgw-global-header", Math.random()*10+"")
-//					.header("ClientId","deleogold@gmail.com")
-					.build();
-			return chain.filter(exchange.mutate().request(request).build());
+			URI originalUri = exchange.getRequest().getURI();
+			ServerHttpRequest request = exchange.getRequest();
+			ServerHttpRequest.Builder mutate = request.mutate();
+			String forwardedUri = request.getURI().toString();
+			if (forwardedUri != null && forwardedUri.startsWith("https")) {
+				try {
+					URI mutatedUri = new URI("http",
+							originalUri.getUserInfo(),
+							originalUri.getHost(),
+							originalUri.getPort(),
+							originalUri.getPath(),
+							originalUri.getQuery(),
+							originalUri.getFragment());
+					mutate.uri(mutatedUri);
+				} catch (Exception e) {
+					throw new IllegalStateException(e.getMessage(), e);
+				}
+			}
+			ServerHttpRequest build = mutate.build();
+			return chain.filter(exchange.mutate().request(build).build());
 		};
 	}
 	
