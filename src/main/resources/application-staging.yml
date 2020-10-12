@@ -1,68 +1,255 @@
 server:
   port: 80
+  #  ssl:
+  #    enabled: true
+  #    key-alias: ${ALIAS}
+  #    key-store-password: ${KEYSTORE_PASS}
+  #    key-store: ${KEY_STORE}
+  #    key-store-type: ${KEY_STORE_TYPE}
+  #    key-store-type: PKCS12
+  #    key-alias: gateway
+  #    key-store: src/main/resources/ebininfosoft-ssl-key.p12
 
 app:
   key:
     encryption:
       backend: ${KEY_BACK}
       frontend: ${KEY_FRONT}
+  inventory-base-url: http://inventory-svc:80/
+  user-base-url: http://user-svc:80/
+  order-base-url: http://order-svc:80/
+  nofication-base-url: http://notification-svc:80/
+  wallet-base-url: http://wallet-svc:80/
+
 
 ---
 spring:
   cloud:
     gateway:
       default-filters:
-#        - RemoveRequestHeader=ClientId
+        #        - RemoveRequestHeader=ClientId
         - name: GatewayGlobalFilter
       routes:
 
-        - id: swagger
-          uri: http://wallet-svc:80/
+        # Wallet System
+
+        - id: wallet-swagger
+          uri: ${app.wallet-base-url}
           predicates:
-            - Path=/**
+            - Path=/wallet-system/**
 
         - id: token
-          uri: http://wallet-svc:80/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/token/**
           filters:
-            - name: TokenPreFilter
-            - name: TokenPostFilter
+            - name: EncryptDecryptFilter
+
         - id: wallet
-          uri: http://wallet-svc:80/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/wallet/**
         - id: account
-          uri: http://wallet-svc:80/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/account/**
         - id: bank
-          uri: http://wallet-svc:80/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/bank/**
         - id: client
-          uri: http://wallet-svc:80/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/client/**
         - id: transactions
-          uri: http://wallet-svc:80/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/transactions/**
         - id: payment
-          uri: http://wallet-svc:80/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/payment/**
         - id: role
-          uri: http://wallet-svc:80/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/role/**
-#server:
-#  ssl:
-#    enabled: true
-#    key-alias: ${ALIAS}
-#    key-store-password: ${KEYSTORE_PASS}
-#    key-store: ${KEY_STORE}
-#    key-store-type: ${KEY_STORE_TYPE}
-#    key-store-type: PKCS12
-#    key-alias: gateway
-#    key-store: src/main/resources/ebininfosoft-ssl-key.p12
+
+        #Notification services
+
+        - id: notification
+          uri: ${app.nofication-base-url}
+          predicates:
+            - Path=/api/v1/email
+
+        #Order services
+
+        - id: order-swagger
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/swagger-doc-minng/**
+
+        - id: order-quotation
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/quotation/**
+
+        - id: order-rfq
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/rfq/**
+
+        - id: order-inquiry
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/inquiry/**
+
+        - id: order-invoice
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/invoice/**
+
+        - id: order-order
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/order/**
+
+        #Inventory Service
+
+        - id: inventory-swagger
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/inventory/documentation/**
+
+        - id: inventory-category
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/category/**
+
+        - id: inventory-product
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/product/**
+
+        - id: inventory-order-types
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/order-types/**
+
+        - id: inventory-vat
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/vat/**
+
+
+        - id: inventory-logistics
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/logistics/**
+
+
+        - id: inventory-dimension-units
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/dimension-units/**
+
+
+        - id: inventory-weight-units
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/weight-units/**
+
+
+        - id: inventory-bulk-units
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/bulk-units/**
+
+
+        - id: inventory-shipping-class
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/shipping-class/**
+
+
+        - id: inventory-branch
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/branch/**
+
+
+        - id: inventory-store
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/store/**
+
+        - id: inventory-business-type
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/business_type/**
+
+        - id: inventory-production-capacity
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/production-capacity/**
+
+        - id: inventory-trade-association
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/trade_association/**
+
+        - id: inventory-production-certificate
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/production_certificate/**
+
+        - id: inventory-multimedia
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/multimedia/**
+
+        - id: inventory-form
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/form/**
+
+        # User service
+
+        - id: user-swagger
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=api/v1/user/documentation
+
+        - id: user-auth
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: user-user
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/user/**
+
+        - id: user-roles
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/roles/**
+
+        - id: user-privileges
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/privileges/**
+
+        - id: user-countries
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/countries/**
+
+        - id: user-states
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/states/**
+
+        - id: user-cities
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/cities/**

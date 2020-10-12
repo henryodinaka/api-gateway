@@ -61,7 +61,7 @@ public class EncryptDecryptFilter extends AbstractGatewayFilterFactory<EncryptDe
     @Override
     public GatewayFilter apply(Config config) {
 
-//        System.out.println("Applying encrypt-decrypt filter");
+        System.out.println("Applying encrypt-decrypt filter");
         return new OrderedGatewayFilter((exchange, chain) -> {
 
             System.out.println("Applying encrypt-decrypt filter");
@@ -122,11 +122,12 @@ public class EncryptDecryptFilter extends AbstractGatewayFilterFactory<EncryptDe
     private ServerHttpResponse getServerHttpResponse(ServerWebExchange exchange) {
         ServerHttpResponse originalResponse = exchange.getResponse();
 
+        System.out.println("Just here again ");
         return new ServerHttpResponseDecorator(originalResponse) {
 
             @Override
             public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
-
+                System.out.println("Just value ");
                 HttpHeaders httpHeaders = new HttpHeaders();
                 httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
                 httpHeaders.set(HttpHeaders.CONTENT_ENCODING, "application/octet-stream");
@@ -134,7 +135,11 @@ public class EncryptDecryptFilter extends AbstractGatewayFilterFactory<EncryptDe
                 ClientResponse clientResponse = prepareClientResponse(body, httpHeaders);
 
                 Mono<String> modifiedBody = extractBody(exchange, clientResponse)
-                        .flatMap(originalBody -> Mono.just(Objects.requireNonNull(AES.encryptBody(originalBody))))
+                        .flatMap(originalBody -> {
+                            var encryptBody = AES.encryptBody(originalBody);
+                            System.out.println("Encrypted value "+encryptBody);
+                            return Mono.just(Objects.requireNonNull(encryptBody));
+                        })
                         .switchIfEmpty(Mono.empty());
                 BodyInserter<Mono<String>, ReactiveHttpOutputMessage> bodyInserter = BodyInserters.fromPublisher(modifiedBody, String.class);
 
@@ -157,10 +162,13 @@ public class EncryptDecryptFilter extends AbstractGatewayFilterFactory<EncryptDe
             }
 
             private Mono<String> extractBody(ServerWebExchange exchange1, ClientResponse clientResponse) {
+                System.out.println("Was here 1");
 
                 List<String> encodingHeaders = exchange.getResponse().getHeaders()
                         .getOrEmpty(HttpHeaders.CONTENT_ENCODING);
                 for (String encoding : encodingHeaders) {
+                    System.out.println("Was here 2");
+
                     MessageBodyDecoder decoder = messageBodyDecoders.get(encoding);
                     if (decoder != null) {
                         return clientResponse.bodyToMono(byte[].class)
@@ -177,6 +185,7 @@ public class EncryptDecryptFilter extends AbstractGatewayFilterFactory<EncryptDe
                 return clientResponse.bodyToMono(String.class);
 
             }
+
 
             private Mono<DataBuffer> updateBody(ServerHttpResponse httpResponse, CachedBodyOutputMessage message) {
                 Mono<DataBuffer> response = DataBufferUtils.join(message.getBody());

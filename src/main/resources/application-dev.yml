@@ -1,88 +1,254 @@
 server:
   port: 9090
-  ssl:
-    enabled: true
-    key-alias: gateway-keystore
-    key-store-password: leoHenry
-    key-store: src/main/resources/certs/gateway-keystore.p12
-    key-store-type: PKCS12
+#  ssl:
+#    enabled: true
+#    key-alias: gateway-keystore
+#    key-store-password: leoHenry
+#    key-store: src/main/resources/certs/gateway-keystore.p12
+#    key-store-type: PKCS12
 
+#    httpclient:
+#      ssl:
+#        useInsecureTrustManager: true
 app:
   key:
     encryption:
       backend: stillkeepitsimpleAtTheBackEnd
       frontend: justkeepitsimpleAlsoAtTheFrontEnd
+  inventory-base-url: https://minng-inventory-service.herokuapp.com/
+  user-base-url: https://minng-user-service.herokuapp.com/
+  order-base-url: https://minng-order-service.herokuapp.com/
+  nofication-base-url: https://minng-notification-service.herokuapp.com/
+  wallet-base-url: http://localhost:60098/
+
 ---
 spring:
   cloud:
     gateway:
       default-filters:
+        #        - RemoveRequestHeader=ClientId
         - name: GatewayGlobalFilter
       routes:
 
-        - id: swagger
-          uri: http://localhost:60098/
+        # Wallet System
+
+        - id: wallet-swagger
+          uri: ${app.wallet-base-url}
           predicates:
-            - Path=/**
-            #            - name: TokenPostFilter
+            - Path=/wallet-system/**
 
         - id: token
-          uri: http://localhost:60098/
-#          uri: http://35.194.18.85:9090/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/token/**
           filters:
             - name: EncryptDecryptFilter
 
-
         - id: wallet
-          uri: http://localhost:60098/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/wallet/**
-          filters:
-            - name: TokenPreFilter
-
         - id: account
-          uri: http://localhost:60098/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/account/**
-          filters:
-            - name: TokenPreFilter
-
         - id: bank
-          uri: http://localhost:60098/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/bank/**
-          filters:
-            - name: TokenPreFilter
-
         - id: client
-          uri: http://localhost:60098/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/client/**
-          filters:
-            - name: TokenPreFilter
-
         - id: transactions
-          uri: http://localhost:60098/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/transactions/**
-          filters:
-            - name: TokenPreFilter
-
         - id: payment
-          uri: http://localhost:60098/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/payment/**
-          filters:
-            - name: TokenPreFilter
-
         - id: role
-          uri: http://localhost:60098/
+          uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/role/**
-          filters:
-            - name: TokenPreFilter
-#    httpclient:
-#      ssl:
-#        useInsecureTrustManager: true
+
+        #Notification services
+
+        - id: notification
+          uri: ${app.nofication-base-url}
+          predicates:
+            - Path=/api/v1/email
+
+        #Order services
+
+        - id: order-swagger
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/swagger-doc-minng/**
+
+        - id: order-quotation
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/quotation/**
+
+        - id: order-rfq
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/rfq/**
+
+        - id: order-inquiry
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/inquiry/**
+
+        - id: order-invoice
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/invoice/**
+
+        - id: order-order
+          uri: ${app.order-base-url}
+          predicates:
+            - Path=/api/v1/order/**
+
+        #Inventory Service
+
+        - id: inventory-swagger
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/inventory/documentation/**
+
+        - id: inventory-category
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/category/**
+
+        - id: inventory-product
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/product/**
+
+        - id: inventory-order-types
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/order-types/**
+
+        - id: inventory-vat
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/vat/**
+
+
+        - id: inventory-logistics
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/logistics/**
+
+
+        - id: inventory-dimension-units
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/dimension-units/**
+
+
+        - id: inventory-weight-units
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/weight-units/**
+
+
+        - id: inventory-bulk-units
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/bulk-units/**
+
+
+        - id: inventory-shipping-class
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/shipping-class/**
+
+
+        - id: inventory-branch
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/branch/**
+
+
+        - id: inventory-store
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/store/**
+
+        - id: inventory-business-type
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/business_type/**
+
+        - id: inventory-production-capacity
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/production-capacity/**
+
+        - id: inventory-trade-association
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/trade_association/**
+
+        - id: inventory-production-certificate
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/production_certificate/**
+
+        - id: inventory-multimedia
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/multimedia/**
+
+        - id: inventory-form
+          uri: ${app.inventory-base-url}
+          predicates:
+            - Path=/api/v1/form/**
+
+        # User service
+
+        - id: user-swagger
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=api/v1/user/documentation
+
+        - id: user-auth
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: user-user
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/user/**
+
+        - id: user-roles
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/roles/**
+
+        - id: user-privileges
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/privileges/**
+
+        - id: user-countries
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/countries/**
+
+        - id: user-states
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/states/**
+
+        - id: user-cities
+          uri: ${app.user-base-url}
+          predicates:
+            - Path=/api/v1/cities/**
