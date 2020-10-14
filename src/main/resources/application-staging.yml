@@ -26,22 +26,27 @@ app:
 spring:
   cloud:
     gateway:
+      default-filters:
+          #        - RemoveRequestHeader=ClientId
+          - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+          - name: GatewayGlobalFilter
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins:
-              - min.min.com.ng
-              - inventory.min.com.ng
-              - user.min.com.ng
-              - admin.min.com.ng
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - PATCH
-      default-filters:
-        #        - RemoveRequestHeader=ClientId
-        - name: GatewayGlobalFilter
+          allowed-origins: "*"
+          allowed-methods: "*"
+          allowed-headers: "*"
+          allow-credentials: true
+          #            allowedOrigins:
+          #              - min.min.com.ng
+          #              - inventory.min.com.ng
+          #              - user.min.com.ng
+          #              - admin.min.com.ng
+          #            allowedMethods:
+          #              - GET
+          #              - POST
+          #              - PUT
+          #              - PATCH
       routes:
 
         # Wallet System
