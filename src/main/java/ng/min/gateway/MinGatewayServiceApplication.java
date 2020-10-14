@@ -16,19 +16,19 @@ public class MinGatewayServiceApplication {
         SpringApplication.run(MinGatewayServiceApplication.class, args);
     }
 
-    @Bean
-    public CorsWebFilter corsWebFilter() {
-
-        final CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Arrays.asList("min.com.ng","inventory.min.com.ng","user.min.com.ng","admin.min.com.ng"));
-        corsConfig.setMaxAge(3600L);
-        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST","PATCH","PUT"));
-        corsConfig.addAllowedHeader("*");
-
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
-
-        return new CorsWebFilter(source);
-    }
+//    @Bean
+//    public CorsWebFilter corsWebFilter() {
+//
+//        final CorsConfiguration corsConfig = new CorsConfiguration();
+//        corsConfig.setAllowedOrigins(Arrays.asList("min.com.ng","inventory.min.com.ng","user.min.com.ng","admin.min.com.ng"));
+//        corsConfig.setMaxAge(3600L);
+//        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST","PATCH","PUT"));
+//        corsConfig.addAllowedHeader("*");
+//
+//        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", corsConfig);
+//
+//        return new CorsWebFilter(source);
+//    }
 
 }
