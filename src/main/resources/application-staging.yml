@@ -26,6 +26,12 @@ app:
 spring:
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "inventory.min.com.ng"
+            allowedMethods:
+              - GET
       default-filters:
         #        - RemoveRequestHeader=ClientId
         - name: GatewayGlobalFilter
