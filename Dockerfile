@@ -7,7 +7,7 @@ ENV KEY_FRONT stillkeepitsimpleAtTheBackEnd
 ENV KEY_BACK stillkeepitsimpleAtTheBackEnd
 ENV PROJECT_ID trusty-dialect-284219
 COPY src /workspace/src
-RUN mvn -B clean package --file pom.xml -DskipTests
+RUN mvn -B clean package --file pom.xml -Dspring.profiles.active=staging -DskipTests
 
 FROM openjdk:14-slim
 COPY --from=build /workspace/target/*gateway.jar gateway.jar

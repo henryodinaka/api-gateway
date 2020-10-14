@@ -33,10 +33,10 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-          allowed-origins: "*"
-          allowed-methods: "*"
-          allowed-headers: "*"
-          allow-credentials: true
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
           #            allowedOrigins:
           #              - min.min.com.ng
           #              - inventory.min.com.ng
