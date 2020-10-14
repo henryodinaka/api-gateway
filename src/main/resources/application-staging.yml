@@ -33,7 +33,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowed-origins: "*"
+            allowed-origins: "http://user.min.com.ng/"
             allowed-methods: "*"
             allowed-headers: "*"
             allow-credentials: true
