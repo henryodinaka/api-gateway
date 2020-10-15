@@ -8,8 +8,6 @@ import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-
 @Configuration
 public class PreFlightCorsConfiguration {
 
@@ -22,7 +20,7 @@ public class PreFlightCorsConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
-        config.setAllowedOrigins(Arrays.asList("http://user.min.com.ng","http://admin.min.com.ng","http://inventory.min.com.ng","http://min.com.ng"));
+//        config.setAllowedOrigins(Arrays.asList("http://user.min.com.ng","http://admin.min.com.ng","http://inventory.min.com.ng","http://min.com.ng"));
         config.addAllowedMethod(HttpMethod.PUT.name());
         config.addAllowedMethod(HttpMethod.POST.name());
         config.addAllowedMethod(HttpMethod.PATCH.name());

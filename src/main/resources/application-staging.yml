@@ -28,8 +28,9 @@ spring:
     gateway:
       default-filters:
           #        - RemoveRequestHeader=ClientId
-#          - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
-          - name: GatewayGlobalFilter
+      - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+#          - name: GatewayGlobalFilter
+
 #      globalcors:
 #        cors-configurations:
 #          '[/**]':
