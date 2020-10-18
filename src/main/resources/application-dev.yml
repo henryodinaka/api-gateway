@@ -1,15 +1,12 @@
 server:
   port: 9090
-#  ssl:
-#    enabled: true
-#    key-alias: gateway-keystore
-#    key-store-password: leoHenry
-#    key-store: src/main/resources/certs/gateway-keystore.p12
-#    key-store-type: PKCS12
+  ssl:
+    enabled: true
+    key-alias: gateway-keystore
+    key-store-password: leoHenry
+    key-store: src/main/resources/certs/gateway-keystore.p12
+    key-store-type: PKCS12
 
-#    httpclient:
-#      ssl:
-#        useInsecureTrustManager: true
 app:
   key:
     encryption:
@@ -19,12 +16,15 @@ app:
   user-base-url: https://minng-user-service.herokuapp.com/
   order-base-url: https://minng-order-service.herokuapp.com/
   nofication-base-url: https://minng-notification-service.herokuapp.com/
-  wallet-base-url: http://localhost:60098/
+  wallet-base-url: https://localhost:60098/
 
 ---
 spring:
   cloud:
     gateway:
+      httpclient:
+        ssl:
+          useInsecureTrustManager: true
       default-filters:
         #        - RemoveRequestHeader=ClientId
         - name: GatewayGlobalFilter

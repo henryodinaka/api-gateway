@@ -25,6 +25,7 @@ public class PreFlightCorsConfiguration {
         config.addAllowedMethod(HttpMethod.POST.name());
         config.addAllowedMethod(HttpMethod.PATCH.name());
         config.addAllowedMethod(HttpMethod.GET.name());
+        config.addAllowedMethod(HttpMethod.OPTIONS.name());
         source.registerCorsConfiguration("/**", config);
         return source;
     }
