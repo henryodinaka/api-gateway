@@ -1,11 +1,11 @@
 server:
   port: 9090
-  ssl:
-    enabled: true
-    key-alias: gateway-keystore
-    key-store-password: leoHenry
-    key-store: src/main/resources/certs/gateway-keystore.p12
-    key-store-type: PKCS12
+#  ssl:
+#    enabled: true
+#    key-alias: gateway-keystore
+#    key-store-password: leoHenry
+#    key-store: src/main/resources/certs/gateway-keystore.p12
+#    key-store-type: PKCS12
 
 app:
   key:
@@ -16,7 +16,8 @@ app:
   user-base-url: https://minng-user-service.herokuapp.com/
   order-base-url: https://minng-order-service.herokuapp.com/
   nofication-base-url: https://minng-notification-service.herokuapp.com/
-  wallet-base-url: https://localhost:60098/
+  wallet-base-url: https://localhost:60098/wallet-system
+  auth-serve: http://localhost:60099/auth-serve
 
 ---
 spring:
@@ -30,19 +31,48 @@ spring:
         - name: GatewayGlobalFilter
       routes:
 
+        #        - id: token
+        #          uri: ${app.wallet-base-url}
+        #          predicates:
+        #            - Path=/api/v1/token/**
+        #          filters:
+        #            - name: EncryptDecryptFilter
+
+        #Auth Serve
+
+        - id: auth-swagger
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/auth-serve/**
+
+        - id: token
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/api/v1/token/**
+          filters:
+            - name: EncryptDecryptFilter
+
+        - id: role
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/api/v1/role/**
+
+        - id: permission
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/api/v1/permission/**
+
+        - id: policy
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/api/v1/policy/**
+
         # Wallet System
 
         - id: wallet-swagger
           uri: ${app.wallet-base-url}
           predicates:
             - Path=/wallet-system/**
-
-        - id: token
-          uri: ${app.wallet-base-url}
-          predicates:
-            - Path=/api/v1/token/**
-          filters:
-            - name: EncryptDecryptFilter
 
         - id: wallet
           uri: ${app.wallet-base-url}

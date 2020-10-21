@@ -20,6 +20,7 @@ app:
   order-base-url: http://order-svc:80/
   nofication-base-url: http://notification-svc:80/
   wallet-base-url: http://wallet-svc:80/
+  auth-serve: http://localhost:60099/auth-serve
 
 
 ---
@@ -50,6 +51,35 @@ spring:
           #              - PATCH
       routes:
 
+        #Auth Serve
+
+        - id: auth-swagger
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/auth-serve/**
+
+        - id: token
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/api/v1/token/**
+          filters:
+            - name: EncryptDecryptFilter
+
+        - id: role
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/api/v1/role/**
+
+        - id: permission
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/api/v1/permission/**
+
+        - id: policy
+          uri: ${app.auth-serve}
+          predicates:
+            - Path=/api/v1/policy/**
+
         # Wallet System
 
         - id: wallet-swagger
@@ -57,12 +87,12 @@ spring:
           predicates:
             - Path=/wallet-system/**
 
-        - id: token
-          uri: ${app.wallet-base-url}
-          predicates:
-            - Path=/api/v1/token/**
-          filters:
-            - name: EncryptDecryptFilter
+#        - id: token
+#          uri: ${app.wallet-base-url}
+#          predicates:
+#            - Path=/api/v1/token/**
+#          filters:
+#            - name: EncryptDecryptFilter
 
         - id: wallet
           uri: ${app.wallet-base-url}
@@ -76,10 +106,6 @@ spring:
           uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/bank/**
-        - id: client
-          uri: ${app.wallet-base-url}
-          predicates:
-            - Path=/api/v1/client/**
         - id: transactions
           uri: ${app.wallet-base-url}
           predicates:
@@ -88,10 +114,14 @@ spring:
           uri: ${app.wallet-base-url}
           predicates:
             - Path=/api/v1/payment/**
-        - id: role
-          uri: ${app.wallet-base-url}
-          predicates:
-            - Path=/api/v1/role/**
+            #        - id: client
+            #          uri: ${app.wallet-base-url}
+            #          predicates:
+            #            - Path=/api/v1/client/**
+        #        - id: role
+#          uri: ${app.wallet-base-url}
+#          predicates:
+#            - Path=/api/v1/role/**
 
         #Notification services
 
