@@ -20,7 +20,7 @@ app:
   order-base-url: http://order-svc:80/
   nofication-base-url: http://notification-svc:80/
   wallet-base-url: http://wallet-svc:80/
-  auth-serve: http://localhost:60099/auth-serve
+  auth-serve: http://auth-svc:80/auth-serve
 
 
 ---
