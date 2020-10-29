@@ -19,6 +19,13 @@ app:
   wallet-base-url: https://localhost:60098/wallet-system
   auth-serve: http://localhost:60099/auth-serve
 
+  inventory-base-path: /api/v1/inventory
+  user-base-path: /api/v1
+  order-base-path: /api/v1
+  nofication-base-path: /api/v1
+  wallet-base-path: /api/v1
+  auth-serve-path: /api/v1
+
 ---
 spring:
   cloud:
@@ -31,13 +38,6 @@ spring:
         - name: GatewayGlobalFilter
       routes:
 
-        #        - id: token
-        #          uri: ${app.wallet-base-url}
-        #          predicates:
-        #            - Path=/api/v1/token/**
-        #          filters:
-        #            - name: EncryptDecryptFilter
-
         #Auth Serve
 
         - id: auth-swagger
@@ -48,24 +48,24 @@ spring:
         - id: token
           uri: ${app.auth-serve}
           predicates:
-            - Path=/api/v1/token/**
+            - Path=${app.auth-serve-path}/token/**
           filters:
             - name: EncryptDecryptFilter
 
         - id: role
           uri: ${app.auth-serve}
           predicates:
-            - Path=/api/v1/role/**
+            - Path=${app.auth-serve-path}/role/**
 
         - id: permission
           uri: ${app.auth-serve}
           predicates:
-            - Path=/api/v1/permission/**
+            - Path=${app.auth-serve-path}/permission/**
 
         - id: policy
           uri: ${app.auth-serve}
           predicates:
-            - Path=/api/v1/policy/**
+            - Path=${app.auth-serve-path}/policy/**
 
         # Wallet System
 
@@ -77,169 +77,159 @@ spring:
         - id: wallet
           uri: ${app.wallet-base-url}
           predicates:
-            - Path=/api/v1/wallet/**
+            - Path=${app.wallet-base-path}/wallet/**
         - id: account
           uri: ${app.wallet-base-url}
           predicates:
-            - Path=/api/v1/account/**
+            - Path=${app.wallet-base-path}/account/**
         - id: bank
           uri: ${app.wallet-base-url}
           predicates:
-            - Path=/api/v1/bank/**
-        - id: client
-          uri: ${app.wallet-base-url}
-          predicates:
-            - Path=/api/v1/client/**
+            - Path=${app.wallet-base-path}/bank/**
         - id: transactions
           uri: ${app.wallet-base-url}
           predicates:
-            - Path=/api/v1/transactions/**
+            - Path=${app.wallet-base-path}/transactions/**
         - id: payment
           uri: ${app.wallet-base-url}
           predicates:
-            - Path=/api/v1/payment/**
-        - id: role
-          uri: ${app.wallet-base-url}
-          predicates:
-            - Path=/api/v1/role/**
-
-        #Notification services
+            - Path=${app.wallet-base-path}/payment/**
 
         - id: notification
           uri: ${app.nofication-base-url}
           predicates:
-            - Path=/api/v1/email
+            - Path=${app.nofication-base-path}/email
 
         #Order services
 
         - id: order-swagger
           uri: ${app.order-base-url}
           predicates:
-            - Path=/api/v1/swagger-doc-minng/**
+            - Path=${app.order-base-path}/swagger-doc-minng/**
 
         - id: order-quotation
           uri: ${app.order-base-url}
           predicates:
-            - Path=/api/v1/quotation/**
+            - Path=${app.order-base-path}/quotation/**
 
         - id: order-rfq
           uri: ${app.order-base-url}
           predicates:
-            - Path=/api/v1/rfq/**
+            - Path=${app.order-base-path}/rfq/**
 
         - id: order-inquiry
           uri: ${app.order-base-url}
           predicates:
-            - Path=/api/v1/inquiry/**
+            - Path=${app.order-base-path}/inquiry/**
 
         - id: order-invoice
           uri: ${app.order-base-url}
           predicates:
-            - Path=/api/v1/invoice/**
+            - Path=${app.order-base-path}/invoice/**
 
         - id: order-order
           uri: ${app.order-base-url}
           predicates:
-            - Path=/api/v1/order/**
+            - Path=${app.order-base-path}/order/**
 
         #Inventory Service
 
         - id: inventory-swagger
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/inventory/documentation/**
+            - Path=${app.inventory-base-path}/documentation/**
 
         - id: inventory-category
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/category/**
+            - Path=${app.inventory-base-path}/category/**
 
         - id: inventory-product
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/product/**
+            - Path=${app.inventory-base-path}/product/**
 
         - id: inventory-order-types
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/order-types/**
+            - Path=${app.inventory-base-path}/order-types/**
 
         - id: inventory-vat
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/vat/**
+            - Path=${app.inventory-base-path}/vat/**
 
 
         - id: inventory-logistics
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/logistics/**
+            - Path=${app.inventory-base-path}/logistics/**
 
 
         - id: inventory-dimension-units
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/dimension-units/**
+            - Path=${app.inventory-base-path}/dimension-units/**
 
 
         - id: inventory-weight-units
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/weight-units/**
+            - Path=${app.inventory-base-path}/weight-units/**
 
 
         - id: inventory-bulk-units
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/bulk-units/**
+            - Path=${app.inventory-base-path}/bulk-units/**
 
 
         - id: inventory-shipping-class
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/shipping-class/**
+            - Path=${app.inventory-base-path}/shipping-class/**
 
 
         - id: inventory-branch
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/branch/**
+            - Path=${app.inventory-base-path}/branch/**
 
 
         - id: inventory-store
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/store/**
+            - Path=${app.inventory-base-path}/store/**
 
         - id: inventory-business-type
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/business_type/**
+            - Path=${app.inventory-base-path}/business_type/**
 
         - id: inventory-production-capacity
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/production-capacity/**
+            - Path=${app.inventory-base-path}/production-capacity/**
 
         - id: inventory-trade-association
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/trade_association/**
+            - Path=${app.inventory-base-path}/trade_association/**
 
         - id: inventory-production-certificate
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/production_certificate/**
+            - Path=${app.inventory-base-path}/production_certificate/**
 
         - id: inventory-multimedia
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/multimedia/**
+            - Path=${app.inventory-base-path}/multimedia/**
 
         - id: inventory-form
           uri: ${app.inventory-base-url}
           predicates:
-            - Path=/api/v1/form/**
+            - Path=${app.inventory-base-path}/form/**
 
         # User service
 
@@ -251,34 +241,34 @@ spring:
         - id: user-auth
           uri: ${app.user-base-url}
           predicates:
-            - Path=/api/v1/auth/**
+            - Path=${app.user-base-path}/auth/**
 
         - id: user-user
           uri: ${app.user-base-url}
           predicates:
-            - Path=/api/v1/user/**
+            - Path=${app.user-base-path}/user/**
 
         - id: user-roles
           uri: ${app.user-base-url}
           predicates:
-            - Path=/api/v1/roles/**
+            - Path=${app.user-base-path}/roles/**
 
         - id: user-privileges
           uri: ${app.user-base-url}
           predicates:
-            - Path=/api/v1/privileges/**
+            - Path=${app.user-base-path}/privileges/**
 
         - id: user-countries
           uri: ${app.user-base-url}
           predicates:
-            - Path=/api/v1/countries/**
+            - Path=${app.user-base-path}/countries/**
 
         - id: user-states
           uri: ${app.user-base-url}
           predicates:
-            - Path=/api/v1/states/**
+            - Path=${app.user-base-path}/states/**
 
         - id: user-cities
           uri: ${app.user-base-url}
           predicates:
-            - Path=/api/v1/cities/**
+            - Path=${app.user-base-path}/cities/**
