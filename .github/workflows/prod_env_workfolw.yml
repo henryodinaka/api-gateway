@@ -6,15 +6,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Pull manifest file from config repo
-        run: curl -o wallet-system.yml https://1fd8c0ce5eaea18fac2f3551890548070f061bf3@raw.githubusercontent.com/henryodinakamin/ConfigStore/master/k8s-manifests/deployments/wallet-system.yml
-      - name: kubectl - Google Cloud GKE cluster.
-        uses: ameydev/gke-kubectl-action@master
-        env:
-          PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          APPLICATION_CREDENTIALS: ${{ secrets.GKE_KEY }}
-          CLUSTER_NAME: min-ng
-          ZONE_NAME: us-central1-a
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
         with:
-          args: apply -f wallet-system.yml
+          java-version: 11
+
+#      - name: Cache the Maven packages to speed up build
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: ${{ runner.os }}-m2
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Container image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/service:mkt-api-gateway .
+
+      - name: Publish Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/service:mkt-api-gateway
