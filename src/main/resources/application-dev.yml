@@ -12,12 +12,12 @@ app:
     encryption:
       backend: stillkeepitsimpleAtTheBackEnd
       frontend: justkeepitsimpleAlsoAtTheFrontEnd
-  inventory-base-url: https://minng-inventory-service.herokuapp.com/
-  user-base-url: https://minng-user-service.herokuapp.com/
-  order-base-url: https://minng-order-service.herokuapp.com/
-  nofication-base-url: https://minng-notification-service.herokuapp.com/
-  wallet-base-url: https://localhost:60098/wallet-system
-  auth-serve: http://localhost:60099/auth-serve
+  inventory-base-url: https://url/
+  user-base-url: https://url/
+  order-base-url: https://url/
+  nofication-base-url: https://url/
+  wallet-base-url: http://url
+  auth-serve: http://url
 
   inventory-base-path: /api/v1/inventory
   user-base-path: /api/v1
